@@ -59,7 +59,7 @@ validate $? "download zip file"
 
 cd /app
 
-rm -f /app/* 
+rm -rf /app/* 
 #idemopontent so we are removing the everything whatever we have created in the app folder so that multiple time if you run there will be no problem
 unzip /tmp/backend.zip
 validate $? "unzipped the backend code"
@@ -70,17 +70,17 @@ validate $? "npm installed"
 cp /home/ec2-user/expense-project-script/expense-shell/backend.service /etc/systemd/system/backend.service &>>$LOGFILE
 VALIDATE $? "Copied backend service"
 
-systemctl daemon-reload
+systemctl daemon-reload &>>$fileName
 validate $? "daemon reloaded"
-systemctl start backend
+systemctl start backend &>>$fileName
 validate $? "backend service started"
 
-systemctl enable backend
+systemctl enable backend &>>$fileName
 validate $? "enabled backend service"
 
-dnf install mysql -y
+dnf install mysql -y &>>$fileName
 mysql -h 172.31.28.130 -uroot -p${mysql_root_password} < /app/schema/backend.sql
 
-systemctl restart backend
+systemctl restart backend &>>$fileName
 validate $? "backend service restarted"
 
