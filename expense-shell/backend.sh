@@ -80,7 +80,7 @@ systemctl enable backend
 validate $? "enabled backend service"
 
 dnf install mysql -y
-mysql -h 172.31.82.218 -uroot -p${mysql_root_password} < /app/schema/backend.sql
+mysql -h 172.31.28.130 -uroot -p${mysql_root_password} < /app/schema/backend.sql
 
 systemctl restart backend
 validate $? "backend service restarted"
