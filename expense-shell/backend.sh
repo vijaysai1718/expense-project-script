@@ -61,13 +61,13 @@ cd /app
 
 rm -rf /app/* 
 #idemopontent so we are removing the everything whatever we have created in the app folder so that multiple time if you run there will be no problem
-unzip /tmp/backend.zip
+unzip /tmp/backend.zip &>>$fileName
 validate $? "unzipped the backend code"
 
 npm install
 validate $? "npm installed"
 #check your repo and path
-cp /home/ec2-user/expense-project-script/expense-shell/backend.service /etc/systemd/system/backend.service &>>$LOGFILE
+cp /home/ec2-user/expense-project-script/expense-shell/backend.service /etc/systemd/system/backend.service &>>$fileName
 VALIDATE $? "Copied backend service"
 
 systemctl daemon-reload &>>$fileName
@@ -78,7 +78,7 @@ validate $? "backend service started"
 systemctl enable backend &>>$fileName
 validate $? "enabled backend service"
 
-dnf install mysql -y &>>$fileName
+dnf install mysql -y &>>$fileName #ExpenseApp@1
 mysql -h 172.31.28.130 -uroot -p${mysql_root_password} < /app/schema/backend.sql
 
 systemctl restart backend &>>$fileName
