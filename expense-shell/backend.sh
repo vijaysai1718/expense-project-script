@@ -55,32 +55,32 @@ fi
 mkdir -p /app
 
 curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip
-validate $? "download zip file"
+vaildate $? "download zip file"
 
 cd /app
 
 rm -rf /app/* 
 #idemopontent so we are removing the everything whatever we have created in the app folder so that multiple time if you run there will be no problem
 unzip /tmp/backend.zip &>>$fileName
-validate $? "unzipped the backend code"
+vaildate $? "unzipped the backend code"
 
 npm install
-validate $? "npm installed"
+vaildate $? "npm installed"
 #check your repo and path
 cp /home/ec2-user/expense-project-script/expense-shell/backend.service /etc/systemd/system/backend.service &>>$fileName
-VALIDATE $? "Copied backend service"
+vaildate $? "Copied backend service"
 
 systemctl daemon-reload &>>$fileName
-validate $? "daemon reloaded"
+vaildate $? "daemon reloaded"
 systemctl start backend &>>$fileName
-validate $? "backend service started"
+vaildate $? "backend service started"
 
 systemctl enable backend &>>$fileName
-validate $? "enabled backend service"
+vaildate $? "enabled backend service"
 
 dnf install mysql -y &>>$fileName #ExpenseApp@1
 mysql -h 172.31.28.130 -uroot -p${mysql_root_password} < /app/schema/backend.sql
 
 systemctl restart backend &>>$fileName
-validate $? "backend service restarted"
+vaildate $? "backend service restarted"
 
