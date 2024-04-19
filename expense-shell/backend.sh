@@ -42,7 +42,7 @@ vaildate $? "Installed the nodejs"
 #useradd expense
 
 # below command will check whether expense id is there or not. if its not there then we have add user.
-id expense
+id expense &>>$LOGFILE
 
 if [ $? -ne 0 ]
 then
@@ -67,12 +67,21 @@ validate $? "unzipped the backend code"
 
 npm install
 validate $? "npm installed"
+#check your repo and path
+cp /home/ec2-user/expense-project-script/expense-shell/backend.service /etc/systemd/system/backend.service &>>$LOGFILE
+VALIDATE $? "Copied backend service"
 
 systemctl daemon-reload
+validate $? "daemon reloaded"
 systemctl start backend
+validate $? "backend service started"
+
 systemctl enable backend
+validate $? "enabled backend service"
+
 dnf install mysql -y
 mysql -h 172.31.82.218 -uroot -p${mysql_root_password} < /app/schema/backend.sql
 
 systemctl restart backend
+validate $? "backend service restarted"
 
