@@ -42,8 +42,7 @@ vaildate $? "Installed the nodejs"
 #useradd expense
 
 # below command will check whether expense id is there or not. if its not there then we have add user.
-id expense &>>$LOGFILE
-
+id expense &>>$fileName
 if [ $? -ne 0 ]
 then
 useradd expense
