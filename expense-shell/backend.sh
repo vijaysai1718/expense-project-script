@@ -50,6 +50,7 @@ useradd expense
 vaildate $? "expense user created"
 else
 echo -e "already user expense added... $yellow skipping $normal"
+fi
 
 #if you put as -p then if the directory is not there it will create other wise it will ignore
 mkdir -p /app
