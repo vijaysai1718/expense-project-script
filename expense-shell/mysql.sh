@@ -21,7 +21,7 @@ else
 echo "User is having super access"
 fi
 
-vaildate()
+validate()
 
 if [ $1 -ne 0 ]
 then
@@ -33,13 +33,13 @@ fi
 
 dnf install mysql-server -y &>>$fileName
 
-vaildate $? "mysql-server installation is"
+validate $? "mysql-server installation is"
 
 systemctl enable mysqld &>>$fileName
-vaildate $? "mysqld server got enabled "
+validate $? "mysqld server got enabled "
 
 systemctl start mysqld
-vaildate $? "mysqld server started"
+validate $? "mysqld server started"
 
 # mysql_secure_installation --set-root-pass ExpenseApp@1 &>>$LOGFILE
 # VALIDATE $? "Setting up root password"
@@ -51,7 +51,7 @@ mysql -h 34.226.190.65 -uroot -p${mysql_root_password} -e 'show databases;' &>>$
 if [ $? -ne 0 ]
 then
     mysql_secure_installation --set-root-pass ${mysql_root_password} &>>$fileName
-    vaildate $? "MySQL Root password Setup"
+    validate $? "MySQL Root password Setup"
 else
     echo -e "MySQL Root password is already setup...$yellow SKIPPING $normal"
 fi

@@ -20,7 +20,7 @@ else
 echo "User is having super access"
 fi
 
-vaildate()
+validate()
 
 if [ $1 -ne 0 ]
 then
@@ -32,11 +32,11 @@ fi
 
 #this is will disable the default node js 
 dnf module disable nodejs -y &>>fileName.log
-vaildate $? "disabled the nodejs default"
+validate $? "disabled the nodejs default"
 dnf module enable nodejs:20 -y &>>fileName.log
-vaildate $? "enabled the nodejs::20 is"
+validate $? "enabled the nodejs::20 is"
 dnf install nodejs -y &>>fileName.log
-vaildate $? "Installed the nodejs"
+validate $? "Installed the nodejs"
 
 # if you are directly add user without any vaildation then if u run multiple times then this script will fail 
 #useradd expense
@@ -46,7 +46,7 @@ id expense &>>$fileName
 if [ $? -ne 0 ]
 then
 useradd expense
-vaildate $? "expense user created"
+validate $? "expense user created"
 else
 echo -e "already user expense added... $yellow skipping $normal"
 fi
@@ -55,32 +55,32 @@ fi
 mkdir -p /app
 
 curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip
-vaildate $? "download zip file"
+validate $? "download zip file"
 
 cd /app
 
 rm -rf /app/* 
 #idemopontent so we are removing the everything whatever we have created in the app folder so that multiple time if you run there will be no problem
 unzip /tmp/backend.zip &>>$fileName
-vaildate $? "unzipped the backend code"
+validate $? "unzipped the backend code"
 
 npm install
-vaildate $? "npm installed"
+validate $? "npm installed"
 #check your repo and path
 cp /home/ec2-user/expense-project-script/expense-shell/backend.service /etc/systemd/system/backend.service &>>$fileName
-vaildate $? "Copied backend service"
+validate $? "Copied backend service"
 
 systemctl daemon-reload &>>$fileName
-vaildate $? "daemon reloaded"
+validate $? "daemon reloaded"
 systemctl start backend &>>$fileName
-vaildate $? "backend service started"
+validate $? "backend service started"
 
 systemctl enable backend &>>$fileName
-vaildate $? "enabled backend service"
+validate $? "enabled backend service"
 
 dnf install mysql -y &>>$fileName #ExpenseApp@1
 mysql -h 172.31.28.130 -uroot -p${mysql_root_password} < /app/schema/backend.sql
 
 systemctl restart backend &>>$fileName
-vaildate $? "backend service restarted"
+validate $? "backend service restarted"
 
