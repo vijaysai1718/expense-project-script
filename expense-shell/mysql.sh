@@ -47,7 +47,7 @@ vaildate $? "mysqld server started"
 #Below code will be useful for idempotent nature
 #below command will be checking whether we are able to get the list of db or not 
 #If we are getting then already password already been set so no need of setting password again which will cause for an issue
-mysql -h {replace with server ip address} -uroot -p${mysql_root_password} -e 'show databases;' &>>$LOGFILE
+mysql -h 3.89.196.108 -uroot -p${mysql_root_password} -e 'show databases;' &>>$LOGFILE
 if [ $? -ne 0 ]
 then
     mysql_secure_installation --set-root-pass ${mysql_root_password} &>>$LOGFILE
