@@ -23,7 +23,7 @@ fi
 
 vaildate()
 
-if [ $1 ne 0 ]
+if [ $1 -ne 0 ]
 then
 echo -e "$2  got $red failed $normal please check the logs for more details"
 exit 1
@@ -51,7 +51,7 @@ mysql -h 3.89.196.108 -uroot -p${mysql_root_password} -e 'show databases;' &>>$f
 if [ $? -ne 0 ]
 then
     mysql_secure_installation --set-root-pass ${mysql_root_password} &>>$fileName
-    VALIDATE $? "MySQL Root password Setup"
+    vaildate $? "MySQL Root password Setup"
 else
     echo -e "MySQL Root password is already setup...$yellow SKIPPING $normal"
 fi
